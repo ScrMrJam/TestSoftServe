@@ -26,3 +26,15 @@ def test_malicious_url_evil():
     print(f"Respuesta: {response.json()}")
     assert response.status_code == 200
     assert response.json()["malicious"] is True
+
+def test_url_with_trailing_slash():
+    url = "/urlinfo/1/bad.com/malware/"
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.json()["malicious"] is True
+
+def test_unknown_url():
+    url = "/urlinfo/1/unknown.com/test"
+    response = client.get(url)
+    assert response.status_code == 200
+    assert response.json()["malicious"] is False
